@@ -1,11 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-async function getPosts(req, res) {
+async function getComments(req, res) {
   try {
-    const posts = await prisma.post.findMany();
+    const comments = await prisma.comment.findMany();
     await prisma.$disconnect();
-    return res.json(posts);
+    return res.json(comments);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -13,12 +13,12 @@ async function getPosts(req, res) {
   }
 }
 
-async function getPost(req, res) {
+async function getComment(req, res) {
   try {
     const id = +req.params.id;
-    const post = await prisma.post.findUnique({ where: { id } });
+    const comment = await prisma.comment.findUnique({ where: { id } });
     await prisma.$disconnect();
-    return res.json(post);
+    return res.json(comment);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -26,14 +26,12 @@ async function getPost(req, res) {
   }
 }
 
-async function createPost(req, res) {
+async function createComment(req, res) {
   try {
-    const { title, text } = req.body;
-    const post = await prisma.post.create({
-      data: { title, text },
-    });
+    const { text } = req.body;
+    const comment = await prisma.comment.create({ data: { text } });
     await prisma.$disconnect();
-    return res.json(post);
+    return res.json(comment);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -41,16 +39,16 @@ async function createPost(req, res) {
   }
 }
 
-async function updatePost(req, res) {
+async function updateComment(req, res) {
   try {
     const id = +req.params.id;
-    const { title, text } = req.body;
-    const post = await prisma.post.update({
+    const { text } = req.body;
+    const comment = await prisma.comment.update({
       where: { id },
-      data: { title, text },
+      data: { text },
     });
     await prisma.$disconnect();
-    return res.json(post);
+    return res.json(comment);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -58,12 +56,12 @@ async function updatePost(req, res) {
   }
 }
 
-async function deletePost(req, res) {
+async function deleteComment(req, res) {
   try {
     const id = +req.params.id;
-    const post = await prisma.post.delete({ where: { id } });
+    const comment = await prisma.comment.delete({ where: { id } });
     await prisma.$disconnect();
-    return res.json(post);
+    return res.json(comment);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -72,9 +70,9 @@ async function deletePost(req, res) {
 }
 
 module.exports = {
-  getPosts,
-  getPost,
-  createPost,
-  updatePost,
-  deletePost,
+  getComments,
+  getComment,
+  createComment,
+  updateComment,
+  deleteComment,
 };
