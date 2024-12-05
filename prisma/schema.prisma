@@ -25,11 +25,11 @@ model User {
 }
 
 model Post {
-  id            Int      @id @default(autoincrement())
+  id            Int       @id @default(autoincrement())
   title         String
   text          String
-  published     Boolean
-  publishedDate DateTime
+  published     Boolean   @default(false)
+  publishedDate DateTime?
   author        User?     @relation(fields: [authorId], references: [id])
   authorId      Int?
 }
@@ -38,7 +38,7 @@ model Comment {
   id        Int      @id @default(autoincrement())
   text      String
   createdAt DateTime @default(now())
-  author    User?     @relation(fields: [authorId], references: [id])
+  author    User?    @relation(fields: [authorId], references: [id])
   authorId  Int?
 }
 

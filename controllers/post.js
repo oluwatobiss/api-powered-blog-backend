@@ -1,11 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-async function getUsers(req, res) {
+async function getPosts(req, res) {
   try {
-    const users = await prisma.user.findMany();
+    const posts = await prisma.post.findMany();
     await prisma.$disconnect();
-    return res.json(users);
+    return res.json(posts);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -13,12 +13,12 @@ async function getUsers(req, res) {
   }
 }
 
-async function getUser(req, res) {
+async function getPost(req, res) {
   try {
     const id = +req.params.id;
-    const user = await prisma.user.findUnique({ where: { id } });
+    const post = await prisma.post.findUnique({ where: { id } });
     await prisma.$disconnect();
-    return res.json(user);
+    return res.json(post);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -26,14 +26,14 @@ async function getUser(req, res) {
   }
 }
 
-async function createUser(req, res) {
+async function createPost(req, res) {
   try {
-    const { firstName, lastName, email, password } = req.body;
-    const user = await prisma.user.create({
-      data: { firstName, lastName, email, password },
+    const { title, text } = req.body;
+    const post = await prisma.post.create({
+      data: { title, text },
     });
     await prisma.$disconnect();
-    return res.json(user);
+    return res.json(post);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -41,16 +41,16 @@ async function createUser(req, res) {
   }
 }
 
-async function updateUser(req, res) {
+async function updatePost(req, res) {
   try {
     const id = +req.params.id;
-    const { firstName, lastName, email } = req.body;
-    const user = await prisma.user.update({
+    const { title, text } = req.body;
+    const post = await prisma.post.update({
       where: { id },
-      data: { firstName, lastName, email },
+      data: { title, text },
     });
     await prisma.$disconnect();
-    return res.json(user);
+    return res.json(post);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -58,12 +58,12 @@ async function updateUser(req, res) {
   }
 }
 
-async function deleteUser(req, res) {
+async function deletePost(req, res) {
   try {
     const id = +req.params.id;
-    const user = await prisma.user.delete({ where: { id } });
+    const post = await prisma.post.delete({ where: { id } });
     await prisma.$disconnect();
-    return res.json(user);
+    return res.json(post);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
@@ -72,9 +72,9 @@ async function deleteUser(req, res) {
 }
 
 module.exports = {
-  getUser,
-  getUsers,
-  createUser,
-  updateUser,
-  deleteUser,
+  getPost,
+  getPosts,
+  createPost,
+  updatePost,
+  deletePost,
 };
