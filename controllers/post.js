@@ -28,9 +28,9 @@ async function getPost(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { title, text } = req.body;
+    const { title, body } = req.body;
     const post = await prisma.post.create({
-      data: { title, text },
+      data: { title, body },
     });
     await prisma.$disconnect();
     return res.json(post);
