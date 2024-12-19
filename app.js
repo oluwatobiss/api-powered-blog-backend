@@ -5,6 +5,7 @@ const express = require("express");
 const userRouter = require("./routes/user");
 const postRouter = require("./routes/post");
 const commentRouter = require("./routes/comment");
+const authenticationRouter = require("./routes/authentication");
 
 dotenvExpand.expand(dotenv.config());
 
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/posts/:id/comments", commentRouter);
+app.use("/auths", authenticationRouter);
 
 app.listen(port, () =>
   console.log(`Server listening for requests at port: ${port}!`)
