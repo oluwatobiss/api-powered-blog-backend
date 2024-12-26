@@ -42,8 +42,16 @@ router.post("/", async (req, res, next) => {
       const user = { id: userData.id };
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error);
-        const payload = { id: user.id, email: user.email };
+        const payload = { id: user.id, email: userData.email };
+
+        console.log("=== Payload ===");
+        console.log(payload);
+
         const token = jwt.sign(payload, process.env.JWT_SECRET);
+
+        console.log("=== Token ===");
+        console.log(token);
+
         return res.json({ token });
       });
     } catch (error) {
