@@ -36,7 +36,7 @@ async function createUser(req, res) {
         data: { firstName, lastName, email, password: hashedPassword },
       });
       await prisma.$disconnect();
-      return res.json(user);
+      return res.json({ id: user.id });
     } catch (e) {
       console.error(e);
       await prisma.$disconnect();
