@@ -28,10 +28,10 @@ async function getComment(req, res) {
 
 async function createComment(req, res) {
   try {
-    const { text } = req.body;
-    const comment = await prisma.comment.create({ data: { text } });
+    const { comment } = req.body;
+    const response = await prisma.comment.create({ data: { comment } });
     await prisma.$disconnect();
-    return res.json(comment);
+    return res.json(response);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();

@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
-app.use("/posts/:id/comments", commentRouter);
+app.use("/comments", commentRouter);
 app.use("/auths", authenticationRouter);
 
 app.listen(port, () =>

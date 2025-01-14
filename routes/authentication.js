@@ -52,7 +52,7 @@ router.post("/", async (req, res, next) => {
         console.log("=== Token ===");
         console.log(token);
 
-        return res.json({ token });
+        return res.json({ token, id: user.id });
       });
     } catch (error) {
       return next(error);
