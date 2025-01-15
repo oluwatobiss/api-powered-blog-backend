@@ -78,10 +78,17 @@ async function updateComment(req, res) {
 
 async function deleteComment(req, res) {
   try {
-    const id = +req.params.id;
-    const comment = await prisma.comment.delete({ where: { id } });
+    console.log("=== Delete Comment req.params ===");
+    console.log(req.params);
+
+    const id = +req.params.commentId;
+    const response = await prisma.comment.delete({ where: { id } });
     await prisma.$disconnect();
-    return res.json(comment);
+
+    console.log("=== Delete comment response ===");
+    console.log(response);
+
+    return res.json(response);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();
