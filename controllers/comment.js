@@ -54,14 +54,21 @@ async function createComment(req, res) {
 
 async function updateComment(req, res) {
   try {
-    const id = +req.params.id;
+    console.log("=== Update Comment req.params ===");
+    console.log(req.params);
+
+    const id = +req.params.commentId;
     const { text } = req.body;
-    const comment = await prisma.comment.update({
+    const response = await prisma.comment.update({
       where: { id },
       data: { text },
     });
     await prisma.$disconnect();
-    return res.json(comment);
+
+    console.log("=== Update comment response ===");
+    console.log(response);
+
+    return res.json(response);
   } catch (e) {
     console.error(e);
     await prisma.$disconnect();

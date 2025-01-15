@@ -4,9 +4,9 @@ const controller = require("../controllers/comment");
 const router = Router({ mergeParams: true });
 
 router.get("/", controller.getComments);
-router.get("/:id", controller.getComment);
+router.get("/:commentId", controller.getComment);
 router.post("/", controller.createComment);
-router.put("/:id", controller.updateComment);
-router.delete("/:id", controller.deleteComment);
+router.put("/:commentId", controller.updateComment);
+router.delete("/:commentId", controller.deleteComment);
 
 module.exports = router;
