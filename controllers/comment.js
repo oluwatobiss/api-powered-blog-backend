@@ -28,10 +28,14 @@ async function getComment(req, res) {
 
 async function createComment(req, res) {
   try {
-    console.log("=== createComment ===");
+    console.log("=== createComment req.body ===");
     console.log(req.body);
 
-    const { text, authorId, postId, authorUsername } = req.body;
+    console.log("=== createComment req.params ===");
+    console.log(req.params);
+
+    const { text, authorId, authorUsername } = req.body;
+    const postId = req.params.postId;
     const response = await prisma.comment.create({
       data: { text, authorId: +authorId, postId: +postId, authorUsername },
     });

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const controller = require("../controllers/comment");
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.get("/", controller.getComments);
 router.get("/:id", controller.getComment);
