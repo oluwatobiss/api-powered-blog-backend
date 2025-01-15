@@ -28,15 +28,21 @@ async function getUser(req, res) {
 }
 
 async function createUser(req, res) {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, username, email, password } = req.body;
   bcrypt.hash(password, 10, async (err, hashedPassword) => {
     if (err) return next(err);
     try {
       const user = await prisma.user.create({
-        data: { firstName, lastName, email, password: hashedPassword },
+        data: {
+          firstName,
+          lastName,
+          username,
+          email,
+          password: hashedPassword,
+        },
       });
       await prisma.$disconnect();
-      return res.json({ id: user.id });
+      return res.json({ id: user.id, username });
     } catch (e) {
       console.error(e);
       await prisma.$disconnect();
@@ -48,10 +54,10 @@ async function createUser(req, res) {
 async function updateUser(req, res) {
   try {
     const id = +req.params.id;
-    const { firstName, lastName, email } = req.body;
+    const { firstName, lastName, username, email } = req.body;
     const user = await prisma.user.update({
       where: { id },
-      data: { firstName, lastName, email },
+      data: { firstName, lastName, username, email },
     });
     await prisma.$disconnect();
     return res.json(user);

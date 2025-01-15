@@ -42,7 +42,7 @@ router.post("/", async (req, res, next) => {
       const user = { id: userData.id };
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error);
-        const payload = { id: user.id, email: userData.email };
+        const payload = { id: user.id, username: userData.username };
 
         console.log("=== Payload ===");
         console.log(payload);
@@ -52,7 +52,7 @@ router.post("/", async (req, res, next) => {
         console.log("=== Token ===");
         console.log(token);
 
-        return res.json({ token, id: user.id });
+        return res.json({ token, payload });
       });
     } catch (error) {
       return next(error);
