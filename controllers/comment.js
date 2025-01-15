@@ -14,19 +14,6 @@ async function getComments(req, res) {
   }
 }
 
-async function getComment(req, res) {
-  try {
-    const id = +req.params.id;
-    const comment = await prisma.comment.findUnique({ where: { id } });
-    await prisma.$disconnect();
-    return res.json(comment);
-  } catch (e) {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
-}
-
 async function createComment(req, res) {
   try {
     console.log("=== createComment req.body ===");
@@ -98,7 +85,6 @@ async function deleteComment(req, res) {
 
 module.exports = {
   getComments,
-  getComment,
   createComment,
   updateComment,
   deleteComment,
