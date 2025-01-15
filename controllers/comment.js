@@ -2,8 +2,9 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function getComments(req, res) {
+  const postId = +req.params.postId;
   try {
-    const comments = await prisma.comment.findMany();
+    const comments = await prisma.comment.findMany({ where: { postId } });
     await prisma.$disconnect();
     return res.json(comments);
   } catch (e) {
