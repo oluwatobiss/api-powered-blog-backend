@@ -58,11 +58,12 @@ async function createPost(req, res) {
 
 async function updatePost(req, res) {
   try {
+    const { title, body, published } = req.body;
     const id = +req.params.id;
-    const { title, body } = req.body;
+    const publishedDate = published ? new Date() : null;
     const post = await prisma.post.update({
       where: { id },
-      data: { title, body },
+      data: { title, body, published, publishedDate },
     });
     await prisma.$disconnect();
     return res.json(post);
