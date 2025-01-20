@@ -3,7 +3,7 @@ const prisma = new PrismaClient();
 
 async function getPosts(req, res) {
   try {
-    const posts = await prisma.post.findMany();
+    const posts = await prisma.post.findMany({ where: { published: true } });
     await prisma.$disconnect();
     return res.json(posts);
   } catch (e) {
