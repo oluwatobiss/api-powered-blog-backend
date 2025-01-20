@@ -13,6 +13,19 @@ async function getPosts(req, res) {
   }
 }
 
+async function getAuthorPosts(req, res) {
+  try {
+    const authorId = +req.params.authorId;
+    const post = await prisma.post.findMany({ where: { authorId } });
+    await prisma.$disconnect();
+    return res.json(post);
+  } catch (e) {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  }
+}
+
 async function getPost(req, res) {
   try {
     const id = +req.params.id;
@@ -29,8 +42,9 @@ async function getPost(req, res) {
 async function createPost(req, res) {
   try {
     const { title, body } = req.body;
+    const authorId = +req.params.authorId;
     const post = await prisma.post.create({
-      data: { title, body },
+      data: { title, body, authorId },
     });
     await prisma.$disconnect();
     return res.json(post);
@@ -44,10 +58,10 @@ async function createPost(req, res) {
 async function updatePost(req, res) {
   try {
     const id = +req.params.id;
-    const { title, text } = req.body;
+    const { title, body } = req.body;
     const post = await prisma.post.update({
       where: { id },
-      data: { title, text },
+      data: { title, body },
     });
     await prisma.$disconnect();
     return res.json(post);
@@ -73,6 +87,7 @@ async function deletePost(req, res) {
 
 module.exports = {
   getPosts,
+  getAuthorPosts,
   getPost,
   createPost,
   updatePost,

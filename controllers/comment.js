@@ -22,10 +22,10 @@ async function createComment(req, res) {
     console.log("=== createComment req.params ===");
     console.log(req.params);
 
-    const { text, authorId, authorUsername } = req.body;
+    const { body, authorId, authorUsername } = req.body;
     const postId = req.params.postId;
     const response = await prisma.comment.create({
-      data: { text, authorId: +authorId, postId: +postId, authorUsername },
+      data: { body, authorId: +authorId, postId: +postId, authorUsername },
     });
     await prisma.$disconnect();
     console.log("=== Create comment response ===");
@@ -45,10 +45,10 @@ async function updateComment(req, res) {
     console.log(req.params);
 
     const id = +req.params.commentId;
-    const { text } = req.body;
+    const { body } = req.body;
     const response = await prisma.comment.update({
       where: { id },
-      data: { text },
+      data: { body },
     });
     await prisma.$disconnect();
 
