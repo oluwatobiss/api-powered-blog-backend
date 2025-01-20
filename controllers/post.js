@@ -41,10 +41,11 @@ async function getPost(req, res) {
 
 async function createPost(req, res) {
   try {
-    const { title, body } = req.body;
+    const { title, body, published } = req.body;
     const authorId = +req.params.authorId;
+    const publishedDate = published ? new Date() : null;
     const post = await prisma.post.create({
-      data: { title, body, authorId },
+      data: { authorId, title, body, published, publishedDate },
     });
     await prisma.$disconnect();
     return res.json(post);
