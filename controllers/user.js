@@ -27,8 +27,17 @@ async function getUser(req, res) {
   }
 }
 
-async function createUser(req, res) {
-  const { firstName, lastName, username, email, password } = req.body;
+async function createUser(req, res, next) {
+  const { firstName, lastName, username, email, password, admin, adminCode } =
+    req.body;
+  let status = "STAFF";
+  if (admin) {
+    if (adminCode === process.env.ADMIN_CODE) {
+      status = "ADMIN";
+    } else {
+      return next(new Error("Incorrect admin code provided"));
+    }
+  }
   bcrypt.hash(password, 10, async (err, hashedPassword) => {
     if (err) return next(err);
     try {
@@ -39,6 +48,7 @@ async function createUser(req, res) {
           username,
           email,
           password: hashedPassword,
+          status,
         },
       });
       await prisma.$disconnect();

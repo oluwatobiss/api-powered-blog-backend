@@ -20,6 +20,10 @@ app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/posts/:postId/comments", commentRouter);
 app.use("/auths", authenticationRouter);
+app.use((err, req, res, next) => {
+  console.error(err);
+  err && res.status(400).json({ error: `${err.message}` });
+});
 
 app.listen(port, () =>
   console.log(`Server listening for requests at port: ${port}!`)
