@@ -42,7 +42,11 @@ router.post("/", async (req, res, next) => {
       const user = { id: userData.id };
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error);
-        const payload = { id: user.id, username: userData.username };
+        const payload = {
+          id: user.id,
+          username: userData.username,
+          status: userData.status,
+        };
 
         console.log("=== Payload ===");
         console.log(payload);
