@@ -138,3 +138,6 @@ uploads/
 
 # Word backup files
 ~$*.docx
+
+# Temporary files
+*.tmp

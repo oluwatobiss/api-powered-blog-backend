@@ -20,7 +20,7 @@ model User {
   username  String    @unique
   email     String    @unique
   password  String
-  status    Status    @default(COMMENTER)
+  status    Status    @default(STAFF)
   posts     Post[]
   comments  Comment[]
 }
@@ -47,8 +47,7 @@ model Comment {
   authorUsername String
 }
 
-enum Status {
-  COMMENTER
-  AUTHOR
+enum Status {  
+  STAFF
   ADMIN
 }
