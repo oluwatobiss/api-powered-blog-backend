@@ -64,10 +64,18 @@ async function createUser(req, res, next) {
 async function updateUser(req, res) {
   try {
     const id = +req.params.id;
-    const { firstName, lastName, username, email } = req.body;
+    const { firstName, lastName, username, email, admin, adminCode } = req.body;
+    let status = "STAFF";
+    if (admin) {
+      if (adminCode === process.env.ADMIN_CODE) {
+        status = "ADMIN";
+      } else {
+        return next(new Error("Incorrect admin code provided"));
+      }
+    }
     const user = await prisma.user.update({
       where: { id },
-      data: { firstName, lastName, username, email },
+      data: { firstName, lastName, username, email, status },
     });
     await prisma.$disconnect();
     return res.json(user);
