@@ -1,5 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
+const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
+const validate = require("../middlewares/validator");
 const prisma = new PrismaClient();
 
 async function getUsers(req, res) {
@@ -27,39 +29,48 @@ async function getUser(req, res) {
   }
 }
 
-async function createUser(req, res, next) {
-  const { firstName, lastName, username, email, password, admin, adminCode } =
-    req.body;
-  let status = "STAFF";
-  if (admin) {
-    if (adminCode === process.env.ADMIN_CODE) {
-      status = "ADMIN";
-    } else {
-      return next(new Error("Incorrect admin code provided"));
+const createUser = [
+  validate.signUpForm,
+  async (req, res, next) => {
+    const { firstName, lastName, username, email, password, admin, adminCode } =
+      req.body;
+    const result = validationResult(req);
+    let status = "STAFF";
+    if (!result.isEmpty()) {
+      console.log("=== createUser in Controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
     }
-  }
-  bcrypt.hash(password, 10, async (err, hashedPassword) => {
-    if (err) return next(err);
-    try {
-      const user = await prisma.user.create({
-        data: {
-          firstName,
-          lastName,
-          username,
-          email,
-          password: hashedPassword,
-          status,
-        },
-      });
-      await prisma.$disconnect();
-      return res.json({ id: user.id, username });
-    } catch (e) {
-      console.error(e);
-      await prisma.$disconnect();
-      process.exit(1);
+    if (admin) {
+      if (adminCode === process.env.ADMIN_CODE) {
+        status = "ADMIN";
+      } else {
+        return next(new Error("Incorrect admin code provided"));
+      }
     }
-  });
-}
+    bcrypt.hash(password, 10, async (err, hashedPassword) => {
+      if (err) return next(err);
+      try {
+        const user = await prisma.user.create({
+          data: {
+            firstName,
+            lastName,
+            username,
+            email,
+            password: hashedPassword,
+            status,
+          },
+        });
+        await prisma.$disconnect();
+        return res.json({ id: user.id, username });
+      } catch (e) {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+      }
+    });
+  },
+];
 
 async function updateUser(req, res) {
   try {

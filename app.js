@@ -22,7 +22,7 @@ app.use("/posts/:postId/comments", commentRouter);
 app.use("/auths", authenticationRouter);
 app.use((err, req, res, next) => {
   console.error(err);
-  err && res.status(400).json({ error: `${err.message}` });
+  err && res.status(400).json({ errors: [{ msg: `${err.message}`, path: "adminCode" }] });
 });
 
 app.listen(port, () =>
