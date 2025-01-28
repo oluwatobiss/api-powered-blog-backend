@@ -33,6 +33,8 @@ const signUpForm = [
   body("email").trim().isEmail().withMessage("Enter a valid email."),
   body("password")
     .trim()
+    .notEmpty()
+    .withMessage(`Password ${emptyErr}.`)
     .isLength({ min: 3, max: 70 })
     .withMessage(`Password ${lengthErr(3, 70)}.`)
     .escape(),
