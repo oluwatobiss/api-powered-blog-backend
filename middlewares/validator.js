@@ -51,10 +51,15 @@ const loginForm = [
     .escape(),
 ];
 
+const postForm = [
+  body("title").trim().notEmpty().withMessage(`Title ${emptyErr}.`).escape(),
+  body("body").trim().notEmpty().withMessage(`Body ${emptyErr}.`).escape(),
+];
+
 const commentForm = body("body")
   .trim()
   .notEmpty()
   .withMessage(`Comment ${emptyErr}.`)
   .escape();
 
-module.exports = { signUpForm, loginForm, commentForm };
+module.exports = { signUpForm, loginForm, postForm, commentForm };

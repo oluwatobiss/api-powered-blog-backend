@@ -1,4 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
+const { validationResult } = require("express-validator");
+const validate = require("../middlewares/validator");
 const prisma = new PrismaClient();
 
 async function getPosts(req, res) {
@@ -39,22 +41,31 @@ async function getPost(req, res) {
   }
 }
 
-async function createPost(req, res) {
-  try {
-    const { title, body, published } = req.body;
-    const authorId = +req.params.authorId;
-    const publishedDate = published ? new Date() : null;
-    const post = await prisma.post.create({
-      data: { authorId, title, body, published, publishedDate },
-    });
-    await prisma.$disconnect();
-    return res.json(post);
-  } catch (e) {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
-}
+const createPost = [
+  validate.postForm,
+  async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("=== createPost in post controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
+    }
+    try {
+      const { title, body, published } = req.body;
+      const authorId = +req.params.authorId;
+      const publishedDate = published ? new Date() : null;
+      const post = await prisma.post.create({
+        data: { authorId, title, body, published, publishedDate },
+      });
+      await prisma.$disconnect();
+      return res.json(post);
+    } catch (e) {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    }
+  },
+];
 
 async function updatePost(req, res) {
   try {

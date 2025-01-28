@@ -32,15 +32,15 @@ async function getUser(req, res) {
 const createUser = [
   validate.signUpForm,
   async (req, res, next) => {
-    const { firstName, lastName, username, email, password, admin, adminCode } =
-      req.body;
     const result = validationResult(req);
-    let status = "STAFF";
     if (!result.isEmpty()) {
       console.log("=== createUser in Controller ===");
       console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
+    const { firstName, lastName, username, email, password, admin, adminCode } =
+      req.body;
+    let status = "STAFF";
     if (admin) {
       if (adminCode === process.env.ADMIN_CODE) {
         status = "ADMIN";

@@ -19,6 +19,12 @@ async function getComments(req, res) {
 const createComment = [
   validate.commentForm,
   async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("=== createComment in comment controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
+    }
     try {
       console.log("=== createComment req.body ===");
       console.log(req.body);
@@ -28,12 +34,6 @@ const createComment = [
 
       const { body, authorId, authorUsername } = req.body;
       const postId = req.params.postId;
-      const result = validationResult(req);
-      if (!result.isEmpty()) {
-        console.log("=== createComment in comment controller ===");
-        console.log(result.array());
-        return res.status(400).json({ errors: result.array() });
-      }
       const response = await prisma.comment.create({
         data: { body, authorId: +authorId, postId: +postId, authorUsername },
       });
@@ -53,18 +53,18 @@ const createComment = [
 const updateComment = [
   validate.commentForm,
   async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("=== updateComment in comment controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
+    }
     try {
       console.log("=== Update Comment req.params ===");
       console.log(req.params);
 
       const id = +req.params.commentId;
       const { body } = req.body;
-      const result = validationResult(req);
-      if (!result.isEmpty()) {
-        console.log("=== updateComment in comment controller ===");
-        console.log(result.array());
-        return res.status(400).json({ errors: result.array() });
-      }
       const response = await prisma.comment.update({
         where: { id },
         data: { body },
