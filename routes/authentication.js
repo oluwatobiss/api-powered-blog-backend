@@ -1,9 +1,11 @@
 const { Router } = require("express");
 const { PrismaClient } = require("@prisma/client");
+const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const validate = require("../middlewares/validator");
 
 const router = Router();
 const prisma = new PrismaClient();
@@ -27,7 +29,13 @@ passport.use(
   })
 );
 
-router.post("/", async (req, res, next) => {
+router.post("/", validate.loginForm, async (req, res, next) => {
+  const result = validationResult(req);
+  if (!result.isEmpty()) {
+    console.log("=== router.post in routes' authentication  ===");
+    console.log(result.array());
+    return res.status(400).json({ errors: result.array() });
+  }
   passport.authenticate("local", async (err, userData, info) => {
     try {
       console.log("=== Local Passport Authenticate ===");
