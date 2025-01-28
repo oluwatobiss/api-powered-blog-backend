@@ -1,4 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
+const { validationResult } = require("express-validator");
+const validate = require("../middlewares/validator");
 const prisma = new PrismaClient();
 
 async function getComments(req, res) {
@@ -14,30 +16,39 @@ async function getComments(req, res) {
   }
 }
 
-async function createComment(req, res) {
-  try {
-    console.log("=== createComment req.body ===");
-    console.log(req.body);
+const createComment = [
+  validate.commentForm,
+  async (req, res) => {
+    try {
+      console.log("=== createComment req.body ===");
+      console.log(req.body);
 
-    console.log("=== createComment req.params ===");
-    console.log(req.params);
+      console.log("=== createComment req.params ===");
+      console.log(req.params);
 
-    const { body, authorId, authorUsername } = req.body;
-    const postId = req.params.postId;
-    const response = await prisma.comment.create({
-      data: { body, authorId: +authorId, postId: +postId, authorUsername },
-    });
-    await prisma.$disconnect();
-    console.log("=== Create comment response ===");
-    console.log(response);
+      const { body, authorId, authorUsername } = req.body;
+      const postId = req.params.postId;
+      const result = validationResult(req);
+      if (!result.isEmpty()) {
+        console.log("=== createComment in comment controller ===");
+        console.log(result.array());
+        return res.status(400).json({ errors: result.array() });
+      }
+      const response = await prisma.comment.create({
+        data: { body, authorId: +authorId, postId: +postId, authorUsername },
+      });
+      await prisma.$disconnect();
+      console.log("=== Create comment response ===");
+      console.log(response);
 
-    return res.json(response);
-  } catch (e) {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
-}
+      return res.json(response);
+    } catch (e) {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    }
+  },
+];
 
 async function updateComment(req, res) {
   try {

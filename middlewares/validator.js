@@ -51,4 +51,10 @@ const loginForm = [
     .escape(),
 ];
 
-module.exports = { signUpForm, loginForm };
+const commentForm = body("body")
+  .trim()
+  .notEmpty()
+  .withMessage(`Comment ${emptyErr}.`)
+  .escape();
+
+module.exports = { signUpForm, loginForm, commentForm };
