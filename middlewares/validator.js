@@ -31,6 +31,11 @@ const updateUserForm = [
     .isLength({ min: 2, max: 8 })
     .withMessage(`Username ${lengthErr(2, 8)}.`),
   body("email").trim().isEmail().withMessage("Enter a valid email."),
+  body("adminCode")
+    .trim()
+    .notEmpty()
+    .withMessage(`Passcode ${emptyErr}.`)
+    .escape(),
 ];
 
 const signUpForm = [

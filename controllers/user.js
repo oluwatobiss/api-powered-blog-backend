@@ -74,7 +74,7 @@ const createUser = [
 
 const updateUser = [
   validate.updateUserForm,
-  async (req, res) => {
+  async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
       console.log("=== updateUser in Controller ===");
