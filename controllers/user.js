@@ -72,30 +72,40 @@ const createUser = [
   },
 ];
 
-async function updateUser(req, res) {
-  try {
-    const id = +req.params.id;
-    const { firstName, lastName, username, email, admin, adminCode } = req.body;
-    let status = "STAFF";
-    if (admin) {
-      if (adminCode === process.env.ADMIN_CODE) {
-        status = "ADMIN";
-      } else {
-        return next(new Error("Incorrect admin code provided"));
-      }
+const updateUser = [
+  validate.updateUserForm,
+  async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("=== updateUser in Controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
     }
-    const user = await prisma.user.update({
-      where: { id },
-      data: { firstName, lastName, username, email, status },
-    });
-    await prisma.$disconnect();
-    return res.json(user);
-  } catch (e) {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
-}
+    try {
+      const id = +req.params.id;
+      const { firstName, lastName, username, email, admin, adminCode } =
+        req.body;
+      let status = "STAFF";
+      if (admin) {
+        if (adminCode === process.env.ADMIN_CODE) {
+          status = "ADMIN";
+        } else {
+          return next(new Error("Incorrect admin code provided"));
+        }
+      }
+      const user = await prisma.user.update({
+        where: { id },
+        data: { firstName, lastName, username, email, status },
+      });
+      await prisma.$disconnect();
+      return res.json(user);
+    } catch (e) {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    }
+  },
+];
 
 async function deleteUser(req, res) {
   try {

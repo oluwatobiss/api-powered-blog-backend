@@ -4,7 +4,7 @@ const alphaErr = "can contain only letters";
 const emptyErr = "must not be blank";
 const lengthErr = (min, max) => `must be between ${min} and ${max} characters`;
 
-const signUpForm = [
+const updateUserForm = [
   body("firstName")
     .trim()
     .notEmpty()
@@ -31,6 +31,10 @@ const signUpForm = [
     .isLength({ min: 2, max: 8 })
     .withMessage(`Username ${lengthErr(2, 8)}.`),
   body("email").trim().isEmail().withMessage("Enter a valid email."),
+];
+
+const signUpForm = [
+  ...updateUserForm,
   body("password")
     .trim()
     .notEmpty()
@@ -62,4 +66,10 @@ const commentForm = body("body")
   .withMessage(`Comment ${emptyErr}.`)
   .escape();
 
-module.exports = { signUpForm, loginForm, postForm, commentForm };
+module.exports = {
+  signUpForm,
+  updateUserForm,
+  loginForm,
+  postForm,
+  commentForm,
+};
