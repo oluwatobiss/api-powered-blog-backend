@@ -67,23 +67,32 @@ const createPost = [
   },
 ];
 
-async function updatePost(req, res) {
-  try {
-    const { title, body, published } = req.body;
-    const id = +req.params.id;
-    const publishedDate = published ? new Date() : null;
-    const post = await prisma.post.update({
-      where: { id },
-      data: { title, body, published, publishedDate },
-    });
-    await prisma.$disconnect();
-    return res.json(post);
-  } catch (e) {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  }
-}
+const updatePost = [
+  validate.postForm,
+  async (req, res) => {
+    const result = validationResult(req);
+    if (!result.isEmpty()) {
+      console.log("=== updatePost in post controller ===");
+      console.log(result.array());
+      return res.status(400).json({ errors: result.array() });
+    }
+    try {
+      const { title, body, published } = req.body;
+      const id = +req.params.id;
+      const publishedDate = published ? new Date() : null;
+      const post = await prisma.post.update({
+        where: { id },
+        data: { title, body, published, publishedDate },
+      });
+      await prisma.$disconnect();
+      return res.json(post);
+    } catch (e) {
+      console.error(e);
+      await prisma.$disconnect();
+      process.exit(1);
+    }
+  },
+];
 
 async function deletePost(req, res) {
   try {
