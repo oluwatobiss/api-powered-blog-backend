@@ -35,7 +35,8 @@ const updateUserForm = [
     .trim()
     .notEmpty()
     .withMessage(`Passcode ${emptyErr}.`)
-    .escape(),
+    .escape()
+    .optional({ values: "falsy" }),
 ];
 
 const signUpForm = [
