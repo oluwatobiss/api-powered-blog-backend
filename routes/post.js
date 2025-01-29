@@ -4,7 +4,7 @@ const middleware = require("../middlewares/authentication");
 
 const router = Router();
 
-router.get("/", middleware.authenticateUser, controller.getPosts);
+router.get("/", controller.getPosts);
 router.get(
   "/authors/:authorId",
   middleware.authenticateUser,
