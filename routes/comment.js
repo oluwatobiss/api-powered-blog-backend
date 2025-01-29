@@ -4,7 +4,7 @@ const middleware = require("../middlewares/authentication");
 
 const router = Router({ mergeParams: true });
 
-router.get("/", middleware.authenticateUser, controller.getComments);
+router.get("/", controller.getComments);
 router.post("/", middleware.authenticateUser, controller.createComment);
 router.put(
   "/:commentId",
