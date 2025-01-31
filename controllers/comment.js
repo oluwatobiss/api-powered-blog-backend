@@ -21,26 +21,15 @@ const createComment = [
   async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== createComment in comment controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     try {
-      console.log("=== createComment req.body ===");
-      console.log(req.body);
-
-      console.log("=== createComment req.params ===");
-      console.log(req.params);
-
       const { body, authorId, authorUsername } = req.body;
       const postId = req.params.postId;
       const response = await prisma.comment.create({
         data: { body, authorId: +authorId, postId: +postId, authorUsername },
       });
       await prisma.$disconnect();
-      console.log("=== Create comment response ===");
-      console.log(response);
-
       return res.json(response);
     } catch (e) {
       console.error(e);
@@ -55,14 +44,9 @@ const updateComment = [
   async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== updateComment in comment controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     try {
-      console.log("=== Update Comment req.params ===");
-      console.log(req.params);
-
       const id = +req.params.commentId;
       const { body } = req.body;
       const response = await prisma.comment.update({
@@ -70,10 +54,6 @@ const updateComment = [
         data: { body },
       });
       await prisma.$disconnect();
-
-      console.log("=== Update comment response ===");
-      console.log(response);
-
       return res.json(response);
     } catch (e) {
       console.error(e);
@@ -85,16 +65,9 @@ const updateComment = [
 
 async function deleteComment(req, res) {
   try {
-    console.log("=== Delete Comment req.params ===");
-    console.log(req.params);
-
     const id = +req.params.commentId;
     const response = await prisma.comment.delete({ where: { id } });
     await prisma.$disconnect();
-
-    console.log("=== Delete comment response ===");
-    console.log(response);
-
     return res.json(response);
   } catch (e) {
     console.error(e);

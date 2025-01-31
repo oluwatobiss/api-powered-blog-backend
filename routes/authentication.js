@@ -32,15 +32,10 @@ passport.use(
 router.post("/", validate.loginForm, async (req, res, next) => {
   const result = validationResult(req);
   if (!result.isEmpty()) {
-    console.log("=== router.post in routes' authentication  ===");
-    console.log(result.array());
     return res.status(400).json({ errors: result.array() });
   }
   passport.authenticate("local", async (err, userData, info) => {
     try {
-      console.log("=== Local Passport Authenticate ===");
-      console.log(userData);
-
       if (err || !userData) {
         const error = new Error("Authentication error", {
           cause: info.message,
@@ -55,15 +50,7 @@ router.post("/", validate.loginForm, async (req, res, next) => {
           username: userData.username,
           status: userData.status,
         };
-
-        console.log("=== Payload ===");
-        console.log(payload);
-
         const token = jwt.sign(payload, process.env.JWT_SECRET);
-
-        console.log("=== Token ===");
-        console.log(token);
-
         return res.json({ token, payload });
       });
     } catch (error) {

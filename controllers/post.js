@@ -46,8 +46,6 @@ const createPost = [
   async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== createPost in post controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     try {
@@ -72,8 +70,6 @@ const updatePost = [
   async (req, res) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== updatePost in post controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     try {

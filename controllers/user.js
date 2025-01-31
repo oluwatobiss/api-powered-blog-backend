@@ -34,8 +34,6 @@ const createUser = [
   async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== createUser in Controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     const { firstName, lastName, username, email, password, admin, adminCode } =
@@ -77,8 +75,6 @@ const updateUser = [
   async (req, res, next) => {
     const result = validationResult(req);
     if (!result.isEmpty()) {
-      console.log("=== updateUser in Controller ===");
-      console.log(result.array());
       return res.status(400).json({ errors: result.array() });
     }
     try {
