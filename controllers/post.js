@@ -4,8 +4,14 @@ const validate = require("../middlewares/validator");
 const prisma = new PrismaClient();
 
 async function getPosts(req, res) {
+  console.log("=== getPosts ===");
+  console.log(req.query?.status);
+
   try {
-    const posts = await prisma.post.findMany({ where: { published: true } });
+    const posts =
+      req.query?.status === "ADMIN"
+        ? await prisma.post.findMany()
+        : await prisma.post.findMany({ where: { published: true } });
     await prisma.$disconnect();
     return res.json(posts);
   } catch (e) {
