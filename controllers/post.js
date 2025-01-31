@@ -4,9 +4,6 @@ const validate = require("../middlewares/validator");
 const prisma = new PrismaClient();
 
 async function getPosts(req, res) {
-  console.log("=== getPosts ===");
-  console.log(req.query?.status);
-
   try {
     const posts =
       req.query?.status === "ADMIN"
