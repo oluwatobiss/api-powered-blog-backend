@@ -10,7 +10,7 @@ const userRouter = require("./routes/user");
 dotenvExpand.expand(dotenv.config());
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
@@ -22,7 +22,10 @@ app.use("/posts/:postId/comments", commentRouter);
 app.use("/auths", authenticationRouter);
 app.use((err, req, res, next) => {
   console.error(err);
-  err && res.status(400).json({ errors: [{ msg: `${err.message}`, path: "adminCode" }] });
+  err &&
+    res
+      .status(400)
+      .json({ errors: [{ msg: `${err.message}`, path: "adminCode" }] });
 });
 
 app.listen(port, () =>
