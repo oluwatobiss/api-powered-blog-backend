@@ -23,8 +23,7 @@
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0",
-    "pg": "^8.13.1"
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "prisma": "^6.2.1"

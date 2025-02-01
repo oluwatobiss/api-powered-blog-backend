@@ -95,11 +95,10 @@ touch .env
 5. Define the project's environment variables
 
 ```
-DB_URI="postgresql://username:user_password@localhost:5432/api_powered_blog_backend"
 PORT=3000
-JWT_SECRET="example_jwt_secret"
 ADMIN_CODE="example-pass"
-DATABASE_URL=${DB_URI}?schema=public
+JWT_SECRET="example_jwt_secret"
+DATABASE_URL="postgresql://username:user_password@localhost:5432/api_powered_blog_backend"
 ```
 
 6. Migrate the project's schema to your database
