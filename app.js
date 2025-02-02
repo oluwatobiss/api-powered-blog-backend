@@ -1,13 +1,10 @@
-const dotenv = require("dotenv");
-const dotenvExpand = require("dotenv-expand");
+require("dotenv").config();
 const cors = require("cors");
 const express = require("express");
 const authenticationRouter = require("./routes/authentication");
 const commentRouter = require("./routes/comment");
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/user");
-
-dotenvExpand.expand(dotenv.config());
 
 const app = express();
 const port = process.env.PORT || 3000;
