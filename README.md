@@ -99,6 +99,8 @@ PORT=3000
 ADMIN_CODE="example-pass"
 JWT_SECRET="example_jwt_secret"
 DATABASE_URL="postgresql://username:user_password@localhost:5432/api_powered_blog_backend"
+FANSEND_URI="http://localhost:PORT"
+STAFFEND_URI="http://localhost:PORT"
 ```
 
 6. Migrate the project's schema to your database
