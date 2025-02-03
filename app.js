@@ -25,6 +25,21 @@ app.use((err, req, res, next) => {
       .json({ errors: [{ msg: `${err.message}`, path: "adminCode" }] });
 });
 
+app.get("/", (req, res) =>
+  res.send(`
+    <div style="text-align:center;padding:30px 10vw;">
+      <h1>Welcome to the Fans-n-Company Rest API server!</h1>
+      <p>Fans-n-Company brings fans in sync with an organization's internal activities by allowing fans to read a company's published articles and internal communication between staff members.</p>
+      <h2>Fans-n-Company Showcase</h2>
+      <p>These are some of the sites currently using the Fans-n-Company API:</p>
+      <ul style="list-style:none;padding:0;">
+        <li style="margin-bottom:10px;"><a href=${process.env.FANSEND_URI}>FansInSync</a></li>
+        <li style="margin-bottom:10px;"><a href=${process.env.STAFFEND_URI}>StaffBlog</a></li>
+      </ul>
+    </div>
+  `)
+);
+
 app.listen(port, () =>
   console.log(`Server listening for requests at port: ${port}!`)
 );
